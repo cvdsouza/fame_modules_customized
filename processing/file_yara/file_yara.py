@@ -9,13 +9,13 @@ import magic
 
 try:
     import yara
+
     HAVE_YARA = True
 except ImportError:
     HAVE_YARA = False
 
 
 class YaraScan(ProcessingModule):
-
     name = "yara_scan"
     description = "yara scan file"
 
@@ -32,10 +32,10 @@ class YaraScan(ProcessingModule):
             matches = rules.match(data=data)
             if len(matches) > 0:
                 return matches
-        except :
+        except:
             self.log('error', 'Yara rule error. [%s]' % yar_rule_path)
         return None
-        
+
     def each_with_type(self, target, file_type):
         self.results = []
         match_result = False
@@ -44,15 +44,14 @@ class YaraScan(ProcessingModule):
         file_mapping = {
             'Yara-Rules/Webshells_index.yar': ['html', 'javascript'],
             'Yara-Rules/Exploit-Kits_index.yar': ['html', 'javascript', 'jar'],
-            'Yara-Rules/Exploit-Kits_index.yar': ['html', 'javascript', 'jar'],
-            'Yara-Rules/Malicious_Documents_index.yar':['word', 'html', 'excel', 'powerpoint', 'pdf', 'rtf'],
+            'Yara-Rules/Malicious_Documents_index.yar': ['word', 'html', 'excel', 'powerpoint', 'pdf', 'rtf'],
             'Yara-Rules/email_index.yar': ['eml'],
             'Yara-Rules/Mobile_Malware_index.yar': ['apk', 'dex'],
             'Yara-Rules/malware_index.yar': ['executable', 'jar'],
             'Yara-Rules/Packers_index.yar': ['executable', 'jar'],
-            'Yara-Rules/Antidebug_AntiVM_index.yar':['executable', 'jar'],
-            'Yara-Rules/CVE_Rules_index.yar':['executable', 'jar'],
-            'Yara-Rules/index.yar':['data'],
+            'Yara-Rules/Antidebug_AntiVM_index.yar': ['executable', 'jar'],
+            'Yara-Rules/CVE_Rules_index.yar': ['executable', 'jar'],
+            'Yara-Rules/index.yar': ['data'],
         }
         for yar_file in file_mapping.keys():
             if file_type in file_mapping[yar_file]:
