@@ -24,18 +24,16 @@ class EXIF_Analysis(ProcessingModule):
 
         self.results = {}
 
-    def each_with_type(self, target, file_type):
+    def each(self, target):
         self.results = []
         match_result = False
         exiftool_path = "/usr/bin/exiftool"
-        args = [exiftool_path, '-json', target]
+        args = [exiftool_path,'-json', target]
 
         # Run exiftool binary
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT)
-        output = proc.communicate()[0]
+        host = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
 
-        self.results = json.loads(output.decode('utf-8'))[0]
+        self.results = json.loads(host.decode('utf-8'))[0]
 
         return True
 
