@@ -15,6 +15,7 @@ except ImportError:
 
 class EXIF_Analysis(ProcessingModule):
     name = "exif-tool"
+    acts_on = ["executable"]
     description = "Extract EXIF and other metadata using Phil Harvey's exiftool"
 
     def initialize(self):
@@ -27,18 +28,16 @@ class EXIF_Analysis(ProcessingModule):
         self.results = []
         match_result = False
         exiftool_path = "/usr/bin/exiftool"
+        args = [exiftool_path, '-json', target]
 
-        if file_type=='executable':
-            args = [exiftool_path, '-json', target]
+        # Run exiftool binary
+        proc = subprocess.Popen(args, stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
+        output = proc.communicate()[0]
 
-            # Run exiftool binary
-            proc = subprocess.Popen(args, stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
-            output = proc.communicate()[0]
+        self.results = json.loads(output.decode('utf-8'))[0]
 
-            self.results = json.loads(output.decode('utf-8'))[0]
-
-            return True
+        return True
 
 
 
