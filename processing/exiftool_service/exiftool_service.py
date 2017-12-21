@@ -14,34 +14,19 @@ except ImportError:
     HAVE_REQUESTS = False
 
 class EXIF_Analysis(ProcessingModule):
-    name = "exif-tool"
+    name = "exif_tool"
     acts_on = ["executable"]
     description = "Extract EXIF and other metadata using Phil Harvey's exiftool"
 
     def initialize(self):
         if not HAVE_REQUESTS:
-            raise ModuleInitializationError(self, "Missing dependency: yara")
+            raise ModuleInitializationError(self, "Missing dependency: requests")
 
         self.results = {}
 
     def each(self, target):
         self.results = []
-        '''
-        self.results = {
-            'macros': u'',
-            'analysis': {
-                'AutoExec': [],
-                'Suspicious': [],
-                'IOC': [],
-                'Hex String': [],
-                'Base64 String': [],
-                'Dridex string': [],
-                'VBA string': [],
-                'Form String': []
-            }
-        }
-        '''
-        match_result = False
+
         exiftool_path = "/usr/bin/exiftool"
         args = [exiftool_path,'-json', target]
 
