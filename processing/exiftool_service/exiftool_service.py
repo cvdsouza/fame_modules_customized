@@ -27,13 +27,13 @@ class EXIF_Analysis(ProcessingModule):
     def each(self, target):
         self.results = []
         match_result = False
-        #exiftool_path = "/usr/bin/exiftool"
-        #args = [exiftool_path,'-json', target]
+        exiftool_path = "/usr/bin/exiftool"
+        args = [exiftool_path,'-json', target]
 
         # Run exiftool binary
-        #host = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
+        host = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
 
-        self.results.append({'test':'This is a test'})
+        self.results.append(json.loads(host.decode('utf-8'))[0])
 
         return True
 
