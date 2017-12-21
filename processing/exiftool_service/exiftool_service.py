@@ -33,7 +33,7 @@ class EXIF_Analysis(ProcessingModule):
         # Run exiftool binary
         host = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
 
-        self.results = json.loads(host.decode('utf-8'))[0]
+        self.results.append(json.loads(host.decode('utf-8'))[0])
 
         return True
 
