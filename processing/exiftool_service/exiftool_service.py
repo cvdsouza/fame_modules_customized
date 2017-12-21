@@ -25,15 +25,30 @@ class EXIF_Analysis(ProcessingModule):
         self.results = {}
 
     def each(self, target):
-        self.results = []
+        self.results = {
+            'macros': u'',
+            'analysis': {
+                'AutoExec': [],
+                'Suspicious': [],
+                'IOC': [],
+                'Hex String': [],
+                'Base64 String': [],
+                'Dridex string': [],
+                'VBA string': [],
+                'Form String': []
+            }
+        }
         match_result = False
         exiftool_path = "/usr/bin/exiftool"
         args = [exiftool_path,'-json', target]
 
         # Run exiftool binary
         host = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
+        res = json.loads(host.decode('utf-8'))[0]
+        for key,value in res:
+            self.results['analysis'][key].append((value))
 
-        self.results.append(json.loads(host.decode('utf-8'))[0])
+
 
         return True
 
