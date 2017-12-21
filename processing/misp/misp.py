@@ -20,13 +20,13 @@ class MISP(ProcessingModule):
 
     config = [
             {
-                'name': 'api_endpoint',
+                'name': 'misp_api_endpoint',
                 'type': 'str',
                 'default': 'http://127.0.0.1/',
                 'description': "URL of MISP API endpoint."
             },
             {
-                'name': 'api_key',
+                'name': 'misp_api_key',
                 'type': 'str',
                 'description': 'MISP API key',
             }
@@ -39,7 +39,7 @@ class MISP(ProcessingModule):
 
     def each_with_type(self, target, file_type):
         search_result = False
-        self.misp = PyMISP(self.api_endpoint, self.api_key, False)
+        self.misp = PyMISP(self.misp_api_endpoint, self.misp_api_key, False)
         if file_type == 'url':
             misp_result = self.misp.search_all(keyword)
             if 'response' in misp_result:
