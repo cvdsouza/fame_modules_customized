@@ -25,6 +25,7 @@ class EXIF_Analysis(ProcessingModule):
         self.results = {}
 
     def each(self, target):
+        self.results = []
         '''
         self.results = {
             'macros': u'',
@@ -48,7 +49,7 @@ class EXIF_Analysis(ProcessingModule):
         host = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
         res = json.loads(host.decode('utf-8'))[0]
         for key,value in res.items():
-            self.results['Metadata'].append((key,value))
+            self.results.append((key,value))
         return True
 
 
